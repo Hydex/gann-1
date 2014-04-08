@@ -11,8 +11,8 @@ from time import time
 
 from pop import *
 
-# Initiatiing a population with the solution (i.e. 1)
-pop = population(sol=1)
+# Initiatiing a population with the input and the solution (i.e. (1 XOR 0) -> 1)
+pop = population(inputs=(1, 1), sol=0)
 
 print 'population start with a fittest of', pop.getFitness(pop.getFittest())
 
@@ -26,4 +26,4 @@ for gen in range(1, 2001):
 best = pop.getFittest()
 print '\npopulation end with a fittest of', pop.getFitness(best)
 
-print'best individual gives answer to 0 XOR 1 :', best.update((1, 1)), '\n'
+print'best individual gives answer to 0 XOR 1 :', float(best.update((1, 1))), '\n'
