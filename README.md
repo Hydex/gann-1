@@ -26,3 +26,8 @@ Code
 The project is coded in python, though MLP and population library were created using cython, in order to speed things up a litlle. Feel free to use .so/.py files.
 
 The algorithmes themselfves are quite simple, it should be to hard to translate into any other language (I might try that some day).
+
+Future
+======
+
+I will continue improving my code, in order to find other uses to my project.
