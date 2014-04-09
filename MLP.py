@@ -20,7 +20,6 @@ class MLP:
 	def __init__(self, *args):
 		self.args = args
 		n = len(args)
-		
 		self.layers = [np.ones(args[i] + (i==0)) for i in range(0, n)]
 		
 		self.weights = list()

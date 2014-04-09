@@ -12,18 +12,24 @@ from time import time
 from pop import *
 
 # Initiatiing a population with the input and the solution (i.e. (1 XOR 0) -> 1)
-pop = population(inputs=(1, 1), sol=0)
+pop = population(inputs=(1, 0), sol=0)
 
-print 'population start with a fittest of', pop.getFitness(pop.getFittest())
+print 'population start with a fittest of %f%%' % (pop.getFittest()[0]*100)
 
 # First generation
+gen = 1
 
-for gen in range(1, 2001):
+bestValue = 0.0
 
-	if not gen % 100 : print 'Generation', gen, ': fittest =', pop.getFitness(pop.getFittest())
+while bestValue < 1.0: 
+	
+	bestValue, bestIndi = pop.getFittest()
+	if not gen % 100 :
+		print 'Generation {0} : fittest = {1}%'.format(gen, bestValue*100.0)
 	pop.evolve()
+	gen += 1
+	
+bestValue, bestIndi = pop.getFittest()
+print '\npopulation end with a fittest of', bestValue
 
-best = pop.getFittest()
-print '\npopulation end with a fittest of', pop.getFitness(best)
-
-print'best individual gives answer to 0 XOR 1 :', float(best.update((1, 1))), '\n'
+print'best individual gives answer to 1 XOR 1 :', float(bestIndi.update((1, 0))), '\n'
