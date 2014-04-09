@@ -14,10 +14,15 @@ Second part : GA
 
 That's when the genetic algos come handy : we use a simple population of neural networks to improve the weights. Each time the population evolve, it selects the best individuals, i.e. the neural networks with the better weights, and use them in order to create the next generation.
 
+Evolution : The evolution and selection structure I'm currently using are not the methods we usually use in genetic algorithme, details can be found at http://synbiozis.pythonanywhere.com/.
+
+Others methods : - the fitness is defined using the result of a individual for the logic gate, the closer it is to the solution, the greater the fitness will be.
+                 - the mutation method is yet to be changed. For now, every layer of a individual has a 2% chance to be multiplied by a random float between 0 and 2.
+
 Ending
 ------
 
-As we can't actually *reach* the solution, we dicide that after around 2000 generations, most of the evolution has been done. We stop the loop and get the best individual from the last population, then run the XOR gate on him.
+After the population has reached the solution, we stop the loop and get the best individual from the last population, then run the XOR gate on him.
 
 
 Code
@@ -25,10 +30,5 @@ Code
 
 The project is coded in python, though MLP and population library were created using cython, in order to speed things up a litlle. Feel free to use .so/.py files.
 
-The algorithmes themselfves are quite simple, it should be to hard to translate into any other language (I might try that some day).
-
-Future
-======
-
-I will continue improving my code, in order to find other uses to my project.
+The algorithmes themselfves are quite simple, it should be to hard to translate into any other language.
 
