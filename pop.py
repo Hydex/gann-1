@@ -11,24 +11,24 @@ from MLP import MLP
 class population:
 	
 	# Initialisation
-	def __init__(self, inputs=(0, 1), sol=1, size=50, mut=2):
+	def __init__(self, inputs=(1, 1), sol=0, size=50, mut=2):
 		self.pop = [self.generate() for i in range(size)]
 		self.mutationRatio = mut
-		self.sol = sol
-		self.inputs = inputs
+		self.sol = 1
+		self.inputs = (1, 0)
 		
 	# Evolve population
 	def evolve(self):
 	
 		self[-1] = self.getFittest()[1]
+
 		next = list()
 		
 		selections = [self.selection(len(self)/10) for _ in range(2)]
 		
 		for indis in zip(*selections):
-			for elt in self.crossover(indis, 10):
-				next.append(self.mutate(elt))
-				
+			next.extend([elt for elt in self.mutate(self.crossover(indis, 10))])
+							
 		self.pop[:-1] = next[:-1]
 		
 	# Evolving methods
@@ -49,27 +49,25 @@ class population:
 	def crossover(self, indis, n):
 		j, k = indis
 		for _ in range(n/2):
-			x, y = [MLP(2, 3, 2) for _ in range(2)]
-			x.weights[0] = j.weights[0]
-			x.weights[1] = k.weights[1]
+			x, y = [MLP(2, 3, 1) for i in range(2)]
 			
-			y.weights[0] = k.weights[0]
-			y.weights[1] = j.weights[1]
+			r = randrange(1, len(j.args)-1)
 			
+			for i in range(r):
+				x.weights[i] = j.weights[i]
+				y.weights[i] = k.weights[i]
+				
+			for i in range(r, len(j.args)-1):
+				x.weights[i] = k.weights[i]
+				y.weights[i] = j.weights[i]
+				
 			yield x
 			yield y
 	
-	def mutate(self, indi):
-		"""if randrange(100) <= self.mut:
-			new = MLP(2, 3, 1)
-		
-			new.weights[0] = np.dot(indi.weights[0], MLP(2, 3, 1).weights[0])
-			return new
-		else:
-			return indi"""
-			
-		indi.weights = [weight * random() * 2 if randrange(100) <= self.mutationRatio else weight for weight in indi.weights]
-		return indi
+	def mutate(self, indis):
+		for indi in indis:
+			indi.weights = [weight * random() * 2 if randrange(100) <= self.mutationRatio else weight for weight in indi.weights]
+			yield indi
 
 	def generate(self):
 		return MLP(2, 3, 1)
@@ -81,7 +79,8 @@ class population:
 	def getFittest(self):
 		return sorted([(self.getFitness(indi), indi) for indi in self])[-1]
 		
-	def getFitness(self, indi):	
+	def getFitness(self, indi):
+		#print '\n', indi.args, '\n'
 		return 1 - abs(self.sol - float(indi.update(self.inputs)))
 	
 	# Specials methods
